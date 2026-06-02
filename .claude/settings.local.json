@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"D:\\\\DevProjects\\\\private\\\\suno-api-mcp\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "Bash(ls -la \"D:/DevProjects/private/\" | head -20)",
+      "Bash(find \"D:/DevProjects\" -name \"*suno*\" -type d 2>/dev/null)"
+    ]
+  }
+}

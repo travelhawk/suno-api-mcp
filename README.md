@@ -20,7 +20,19 @@ A production-grade **Model Context Protocol (MCP) server** for AI music generati
 
 ## Installation
 
-### Claude Desktop (recommended)
+### Claude Code (one-liner)
+
+```bash
+claude mcp add sunoapi -e SUNOAPI_KEY=your_api_key_here -- npx -y github:travelhawk/suno-api-mcp
+```
+
+### OpenAI Codex CLI (one-liner)
+
+```bash
+codex mcp add sunoapi --env SUNOAPI_KEY=your_api_key_here -- npx -y github:travelhawk/suno-api-mcp
+```
+
+### Claude Desktop
 
 Add this to your `claude_desktop_config.json`:
 

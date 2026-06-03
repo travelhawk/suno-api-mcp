@@ -6,7 +6,7 @@ A production-grade **Model Context Protocol (MCP) server** for AI music generati
 
 | Tool | What it does |
 |---|---|
-| `compose_song` | Generate an original song from a description — blocks until audio is ready |
+| `compose_song` | Generate an original song from a description — blocks until audio is ready (can auto-download as titled `.mp3`) |
 | `write_lyrics` | Write structured verse/chorus lyrics for a theme |
 | `extend_song` | Branch an existing song at a timestamp and continue it |
 | `separate_stems` | Extract vocal and/or instrument stems from a generated track |
@@ -67,6 +67,7 @@ npm run dev          # run with tsx (no compile step)
 | Variable | Required | Description |
 |---|---|---|
 | `SUNOAPI_KEY` | ✅ | Bearer token from your sunoapi.org dashboard |
+| `SUNOAPI_CALLBACK_URL` | — | Optional. sunoapi.org requires a callback URL on every generation request; the server polls for results instead, so a placeholder is sent by default. Set this only if you run your own webhook receiver. |
 
 Copy `.env.example` to `.env` and set your key. When running via Claude Desktop, pass `SUNOAPI_KEY` in the `env` block instead.
 
@@ -78,6 +79,9 @@ Copy `.env.example` to `.env` and set your key. When running via Claude Desktop,
 > **Write lyrics first, then produce**
 > "Write me lyrics about chasing dreams at 3am, then compose a dreamy synth-pop song using them."
 
+> **Generate and save to disk**
+> "Compose a deep house track about deep focus at 120 BPM and download it to ./songs."
+
 > **Extend a track**
 > "That song was great but too short — extend it from the 45-second mark with a guitar solo."
 
@@ -86,6 +90,21 @@ Copy `.env.example` to `.env` and set your key. When running via Claude Desktop,
 
 > **Persona workflow**
 > "Create a persona from that warm baritone voice in track `xyz`, then use it to sing a jazz standard."
+
+## Downloading songs
+
+`compose_song` and `extend_song` accept two optional parameters:
+
+| Parameter | Default | Description |
+|---|---|---|
+| `download` | `false` | When `true`, each finished song is saved to local disk as an `.mp3`. |
+| `download_dir` | `./songs` | Directory the files are written to (created if missing). |
+
+Each file is **named after the song's title** (e.g. `Deep Focus.mp3`) and has its
+ID3 tags written (title, artist `Suno`, and the style as genre), so media players
+show the proper name instead of an opaque URL hash. Titles are sanitized for the
+filesystem and de-duplicated (`Title (2).mp3`) when a batch shares a title. The
+saved path is returned in each song's `file_path` field.
 
 ## Workflow chaining
 

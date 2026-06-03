@@ -52,6 +52,17 @@ export const ComposeSongInput = z.object({
     .positive()
     .default(300_000)
     .describe("Max milliseconds to wait for generation to complete. Default 5 minutes."),
+  download: z
+    .boolean()
+    .default(false)
+    .describe(
+      "When true, download each finished song to local disk as an .mp3 named after its title, " +
+        "with ID3 title/artist tags embedded. The saved path is returned in each song's file_path.",
+    ),
+  download_dir: z
+    .string()
+    .default("./songs")
+    .describe("Directory to save downloaded songs into when download is true. Default ./songs."),
 });
 export type ComposeSongInput = z.infer<typeof ComposeSongInput>;
 
@@ -102,6 +113,17 @@ export const ExtendSongInput = z.object({
     .describe("New title for the extended track."),
   model: SunoModel.default("V4_5"),
   poll_timeout_ms: z.number().int().positive().default(300_000),
+  download: z
+    .boolean()
+    .default(false)
+    .describe(
+      "When true, download each finished song to local disk as a titled .mp3 with ID3 tags. " +
+        "The saved path is returned in each song's file_path.",
+    ),
+  download_dir: z
+    .string()
+    .default("./songs")
+    .describe("Directory to save downloaded songs into when download is true. Default ./songs."),
 });
 export type ExtendSongInput = z.infer<typeof ExtendSongInput>;
 

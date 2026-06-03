@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
+    "node-id3": "^0.2.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -27,7 +28,13 @@
     "type": "git",
     "url": "https://github.com/travelhawk/suno-api-mcp.git"
   },
-  "keywords": ["mcp", "suno", "music", "ai", "modelcontextprotocol"],
+  "keywords": [
+    "mcp",
+    "suno",
+    "music",
+    "ai",
+    "modelcontextprotocol"
+  ],
   "engines": {
     "node": ">=22"
   }

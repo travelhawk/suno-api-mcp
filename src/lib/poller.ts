@@ -1,25 +1,34 @@
 import { sunoFetch } from "./client.js";
 import { log } from "./logger.js";
 
-export interface TaskRecord {
-  taskId: string;
-  status: "SUCCESS" | "GENERATING" | "FAILED" | "PENDING";
-  response?: {
-    data: SongData[];
-  };
-}
-
 export interface SongData {
   id: string;
-  audio_url: string;
-  stream_audio_url: string;
-  image_url: string;
+  audioUrl: string;
+  streamAudioUrl: string;
+  imageUrl: string;
   title: string;
   tags: string;
   duration: number;
-  model_name: string;
+  modelName: string;
+  prompt?: string;
   createTime: string;
 }
+
+export interface TaskRecord {
+  taskId: string;
+  status: string;
+  response?: {
+    sunoData?: SongData[];
+  };
+}
+
+/** Terminal failure statuses returned by sunoapi.org record-info. */
+const FAILED_STATUSES = new Set([
+  "CREATE_TASK_FAILED",
+  "GENERATE_AUDIO_FAILED",
+  "CALLBACK_EXCEPTION",
+  "SENSITIVE_WORD_ERROR",
+]);
 
 export async function pollUntilDone(
   taskId: string,
@@ -34,11 +43,13 @@ export async function pollUntilDone(
     )) as { code: number; data: TaskRecord };
 
     const record = res.data;
-    log("info", `task ${taskId} status: ${record.status}`);
+    log("info", `task ${taskId} status: ${record?.status}`);
 
-    if (record.status === "SUCCESS") return record;
-    if (record.status === "FAILED") {
-      throw new Error(`Task ${taskId} failed on sunoapi.org`);
+    if (record?.status === "SUCCESS") return record;
+    if (FAILED_STATUSES.has(record?.status)) {
+      throw new Error(
+        `Task ${taskId} failed on sunoapi.org (status: ${record.status})`,
+      );
     }
 
     await sleep(intervalMs);

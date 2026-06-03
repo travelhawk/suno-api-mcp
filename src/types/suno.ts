@@ -10,21 +10,37 @@ export interface GenerateTaskResponse {
 
 export interface SongRecord {
   id: string;
-  audio_url: string;
-  stream_audio_url: string;
-  image_url: string;
+  audioUrl: string;
+  streamAudioUrl: string;
+  imageUrl: string;
   title: string;
   tags: string;
   duration: number;
-  model_name: string;
+  modelName: string;
+  prompt?: string;
   createTime: string;
 }
 
+/**
+ * record-info statuses returned by sunoapi.org.
+ * SUCCESS is terminal-success; the *_FAILED / *_ERROR / EXCEPTION values are
+ * terminal-failure. PENDING / TEXT_SUCCESS / FIRST_SUCCESS are in-progress.
+ */
+export type TaskStatus =
+  | "PENDING"
+  | "TEXT_SUCCESS"
+  | "FIRST_SUCCESS"
+  | "SUCCESS"
+  | "CREATE_TASK_FAILED"
+  | "GENERATE_AUDIO_FAILED"
+  | "CALLBACK_EXCEPTION"
+  | "SENSITIVE_WORD_ERROR";
+
 export interface TaskStatusResponse {
   taskId: string;
-  status: "SUCCESS" | "GENERATING" | "FAILED" | "PENDING";
+  status: TaskStatus;
   response?: {
-    data: SongRecord[];
+    sunoData?: SongRecord[];
   };
 }
 

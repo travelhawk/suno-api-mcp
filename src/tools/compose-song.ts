@@ -1,4 +1,4 @@
-import { sunoFetch } from "../lib/client.js";
+import { sunoFetch, CALLBACK_URL } from "../lib/client.js";
 import { log } from "../lib/logger.js";
 import { pollUntilDone } from "../lib/poller.js";
 import type { ComposeSongInput } from "../types/inputs.js";
@@ -26,6 +26,7 @@ export async function composeSong(input: ComposeSongInput): Promise<ComposeSongR
     model: input.model,
     customMode: useCustomMode,
     instrumental: input.instrumental,
+    callBackUrl: CALLBACK_URL,
   };
 
   if (useCustomMode) {
@@ -54,19 +55,19 @@ export async function composeSong(input: ComposeSongInput): Promise<ComposeSongR
   log("info", `song task started`, { taskId });
 
   const record = await pollUntilDone(taskId, input.poll_timeout_ms);
-  const songs: SongRecord[] = record.response?.data ?? [];
+  const songs: SongRecord[] = record.response?.sunoData ?? [];
 
   return {
     task_id: taskId,
     songs: songs.map((s) => ({
       id: s.id,
       title: s.title,
-      audio_url: s.audio_url,
-      stream_audio_url: s.stream_audio_url,
-      image_url: s.image_url,
+      audio_url: s.audioUrl,
+      stream_audio_url: s.streamAudioUrl,
+      image_url: s.imageUrl,
       duration: s.duration,
       tags: s.tags,
-      model: s.model_name,
+      model: s.modelName,
     })),
   };
 }

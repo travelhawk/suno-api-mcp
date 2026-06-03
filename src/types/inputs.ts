@@ -1,6 +1,13 @@
 import { z } from "zod";
 
-const SunoModel = z.enum(["V4", "V4_5", "V5", "V5_5"]);
+const SunoModel = z.enum([
+  "V4",
+  "V4_5",
+  "V4_5PLUS",
+  "V4_5ALL",
+  "V5",
+  "V5_5",
+]);
 
 export const ComposeSongInput = z.object({
   description: z

@@ -8,6 +8,7 @@ import {
   ExtendSongInput,
   SeparateStemsInput,
   CreatePersonaInput,
+  ConvertToWavInput,
   CheckCreditsInput,
 } from "./types/inputs.js";
 
@@ -16,6 +17,7 @@ import { writeLyrics } from "./tools/write-lyrics.js";
 import { extendSong } from "./tools/extend-song.js";
 import { separateStems } from "./tools/separate-stems.js";
 import { createPersona } from "./tools/create-persona.js";
+import { convertToWav } from "./tools/convert-to-wav.js";
 import { checkCredits } from "./tools/check-credits.js";
 
 const server = new McpServer({
@@ -135,6 +137,30 @@ server.tool(
   async (input) => {
     try {
       const result = await createPersona(input as typeof CreatePersonaInput._type);
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (err) {
+      return {
+        content: [{ type: "text", text: `Error: ${(err as Error).message}` }],
+        isError: true,
+      };
+    }
+  },
+);
+
+// ── convert_to_wav ────────────────────────────────────────────────────────────
+
+server.tool(
+  "convert_to_wav",
+  "Convert a previously generated song to lossless WAV format. " +
+    "Requires the task_id and audio_id from a compose_song or extend_song result. " +
+    "Returns a URL to the WAV file, and can optionally download it to disk named after the song title. " +
+    "Useful for high-quality archival or further audio editing.",
+  ConvertToWavInput.shape,
+  async (input) => {
+    try {
+      const result = await convertToWav(input as typeof ConvertToWavInput._type);
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };

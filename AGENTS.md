@@ -20,6 +20,7 @@ src/
     extend-song.ts     # extend_song — POST /generate/extend → poll until SUCCESS
     separate-stems.ts  # separate_stems — POST /vocal-removal/generate → poll until SUCCESS
     create-persona.ts  # create_persona — POST /generate/generate-persona (synchronous)
+    convert-to-wav.ts  # convert_to_wav — POST /wav/generate → poll /wav/record-info
     check-credits.ts   # check_credits — GET /generate/credit (synchronous)
   types/
     inputs.ts          # All Zod schemas + inferred TypeScript types (one per tool)

@@ -2,7 +2,7 @@
 
 ## Project overview
 
-TypeScript MCP server wrapping the **sunoapi.org** REST API. Exposes Suno AI music generation as 6 semantic MCP tools. Pure HTTP — no browser automation.
+TypeScript MCP server wrapping the **sunoapi.org** REST API. Exposes Suno AI music generation as 7 semantic MCP tools. Pure HTTP — no browser automation.
 
 - **Base API:** `https://api.sunoapi.org/api/v1`
 - **Auth:** `SUNOAPI_KEY` env var → `Authorization: Bearer <key>`

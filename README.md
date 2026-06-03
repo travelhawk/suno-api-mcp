@@ -11,6 +11,7 @@ A production-grade **Model Context Protocol (MCP) server** for AI music generati
 | `extend_song` | Branch an existing song at a timestamp and continue it |
 | `separate_stems` | Extract vocal and/or instrument stems from a generated track |
 | `create_persona` | Capture a voice/style from a track as a reusable persona |
+| `convert_to_wav` | Convert a generated song to lossless WAV (can auto-download) |
 | `check_credits` | Check remaining sunoapi.org credits |
 
 ## Prerequisites
@@ -85,6 +86,9 @@ Copy `.env.example` to `.env` and set your key. When running via Claude Desktop,
 > **Extend a track**
 > "That song was great but too short — extend it from the 45-second mark with a guitar solo."
 
+> **Lossless WAV**
+> "Convert that song to WAV and save it to ./songs."
+
 > **Stem separation**
 > "Extract just the vocals from the track with audio ID `abc123`."
 
@@ -106,11 +110,16 @@ show the proper name instead of an opaque URL hash. Titles are sanitized for the
 filesystem and de-duplicated (`Title (2).mp3`) when a batch shares a title. The
 saved path is returned in each song's `file_path` field.
 
+`convert_to_wav` accepts the same `download` / `download_dir` options and saves a
+lossless `<title>.wav` (named after the original song's title, looked up
+automatically; override with the `title` parameter).
+
 ## Workflow chaining
 
 ```
 compose_song  ──► extend_song       (make it longer)
               ──► separate_stems    (isolate instruments)
+              ──► convert_to_wav    (lossless export)
               ──► create_persona    (clone the voice/style)
                        │
                        └──► compose_song(persona_id=…)  (reuse it)

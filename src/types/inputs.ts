@@ -184,5 +184,37 @@ export const CreatePersonaInput = z.object({
 });
 export type CreatePersonaInput = z.infer<typeof CreatePersonaInput>;
 
+export const ConvertToWavInput = z.object({
+  task_id: z
+    .string()
+    .min(1)
+    .describe("The taskId returned by compose_song / extend_song for the source track."),
+  audio_id: z
+    .string()
+    .min(1)
+    .describe("The specific song ID within that task to convert to lossless WAV."),
+  title: z
+    .string()
+    .optional()
+    .describe(
+      "Optional filename title for the downloaded WAV. If omitted, the original song's title is looked up automatically.",
+    ),
+  download: z
+    .boolean()
+    .default(false)
+    .describe("When true, download the resulting WAV file to download_dir."),
+  download_dir: z
+    .string()
+    .default("./songs")
+    .describe("Directory to save the WAV into when download is true. Default ./songs."),
+  poll_timeout_ms: z
+    .number()
+    .int()
+    .positive()
+    .default(180_000)
+    .describe("Max milliseconds to wait for conversion to complete. Default 3 minutes."),
+});
+export type ConvertToWavInput = z.infer<typeof ConvertToWavInput>;
+
 export const CheckCreditsInput = z.object({});
 export type CheckCreditsInput = z.infer<typeof CheckCreditsInput>;

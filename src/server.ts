@@ -9,6 +9,7 @@ import {
   SeparateStemsInput,
   CreatePersonaInput,
   ConvertToWavInput,
+  CreateMusicVideoInput,
   CheckCreditsInput,
 } from "./types/inputs.js";
 
@@ -18,6 +19,7 @@ import { extendSong } from "./tools/extend-song.js";
 import { separateStems } from "./tools/separate-stems.js";
 import { createPersona } from "./tools/create-persona.js";
 import { convertToWav } from "./tools/convert-to-wav.js";
+import { createMusicVideo } from "./tools/create-music-video.js";
 import { checkCredits } from "./tools/check-credits.js";
 
 const server = new McpServer({
@@ -161,6 +163,32 @@ server.tool(
   async (input) => {
     try {
       const result = await convertToWav(input as typeof ConvertToWavInput._type);
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (err) {
+      return {
+        content: [{ type: "text", text: `Error: ${(err as Error).message}` }],
+        isError: true,
+      };
+    }
+  },
+);
+
+// ── create_music_video ────────────────────────────────────────────────────────
+
+server.tool(
+  "create_music_video",
+  "Render a music video (MP4) for a previously generated song. " +
+    "Requires the task_id and audio_id from a compose_song or extend_song result. " +
+    "Optionally stamp an author name and a domain/brand watermark. " +
+    "Returns a URL to the MP4, and can optionally download it to disk named after the song title.",
+  CreateMusicVideoInput.shape,
+  async (input) => {
+    try {
+      const result = await createMusicVideo(
+        input as typeof CreateMusicVideoInput._type,
+      );
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };

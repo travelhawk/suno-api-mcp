@@ -216,5 +216,47 @@ export const ConvertToWavInput = z.object({
 });
 export type ConvertToWavInput = z.infer<typeof ConvertToWavInput>;
 
+export const CreateMusicVideoInput = z.object({
+  task_id: z
+    .string()
+    .min(1)
+    .describe("The taskId returned by compose_song / extend_song for the source track."),
+  audio_id: z
+    .string()
+    .min(1)
+    .describe("The specific song ID within that task to render as a music video."),
+  author: z
+    .string()
+    .max(50)
+    .optional()
+    .describe("Optional artist/creator name to display in the video."),
+  domain_name: z
+    .string()
+    .max(50)
+    .optional()
+    .describe("Optional website/brand watermark to show in the video."),
+  title: z
+    .string()
+    .optional()
+    .describe(
+      "Optional filename title for the downloaded MP4. If omitted, the original song's title is looked up automatically.",
+    ),
+  download: z
+    .boolean()
+    .default(false)
+    .describe("When true, download the resulting MP4 video to download_dir."),
+  download_dir: z
+    .string()
+    .default("./songs")
+    .describe("Directory to save the MP4 into when download is true. Default ./songs."),
+  poll_timeout_ms: z
+    .number()
+    .int()
+    .positive()
+    .default(300_000)
+    .describe("Max milliseconds to wait for the video to render. Default 5 minutes."),
+});
+export type CreateMusicVideoInput = z.infer<typeof CreateMusicVideoInput>;
+
 export const CheckCreditsInput = z.object({});
 export type CheckCreditsInput = z.infer<typeof CheckCreditsInput>;

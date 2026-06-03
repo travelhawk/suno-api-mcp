@@ -12,6 +12,7 @@ A production-grade **Model Context Protocol (MCP) server** for AI music generati
 | `separate_stems` | Extract vocal and/or instrument stems from a generated track |
 | `create_persona` | Capture a voice/style from a track as a reusable persona |
 | `convert_to_wav` | Convert a generated song to lossless WAV (can auto-download) |
+| `create_music_video` | Render an MP4 music video for a generated song (can auto-download) |
 | `check_credits` | Check remaining sunoapi.org credits |
 
 ## Prerequisites
@@ -89,6 +90,9 @@ Copy `.env.example` to `.env` and set your key. When running via Claude Desktop,
 > **Lossless WAV**
 > "Convert that song to WAV and save it to ./songs."
 
+> **Music video**
+> "Make a music video for that track and download the MP4 to ./songs."
+
 > **Stem separation**
 > "Extract just the vocals from the track with audio ID `abc123`."
 
@@ -110,9 +114,10 @@ show the proper name instead of an opaque URL hash. Titles are sanitized for the
 filesystem and de-duplicated (`Title (2).mp3`) when a batch shares a title. The
 saved path is returned in each song's `file_path` field.
 
-`convert_to_wav` accepts the same `download` / `download_dir` options and saves a
-lossless `<title>.wav` (named after the original song's title, looked up
-automatically; override with the `title` parameter).
+`convert_to_wav` and `create_music_video` accept the same `download` /
+`download_dir` options and save `<title>.wav` / `<title>.mp4` respectively (named
+after the original song's title, looked up automatically; override with the
+`title` parameter).
 
 ## Workflow chaining
 
@@ -120,6 +125,7 @@ automatically; override with the `title` parameter).
 compose_song  ──► extend_song       (make it longer)
               ──► separate_stems    (isolate instruments)
               ──► convert_to_wav    (lossless export)
+              ──► create_music_video (render an MP4)
               ──► create_persona    (clone the voice/style)
                        │
                        └──► compose_song(persona_id=…)  (reuse it)

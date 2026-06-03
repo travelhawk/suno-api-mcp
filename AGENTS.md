@@ -21,6 +21,7 @@ src/
     separate-stems.ts  # separate_stems — POST /vocal-removal/generate → poll until SUCCESS
     create-persona.ts  # create_persona — POST /generate/generate-persona (synchronous)
     convert-to-wav.ts  # convert_to_wav — POST /wav/generate → poll /wav/record-info
+    create-music-video.ts # create_music_video — POST /mp4/generate → poll /mp4/record-info
     check-credits.ts   # check_credits — GET /generate/credit (synchronous)
   types/
     inputs.ts          # All Zod schemas + inferred TypeScript types (one per tool)
@@ -70,7 +71,6 @@ Copy `.env.example` → `.env` for local dev. Pass via `env` block in MCP client
 
 The following sunoapi.org endpoints are intentionally not exposed as MCP tools (too niche or require complex prerequisite chains):
 
-- `/mp4/generate` — music video generation
 - `/midi/generate` — MIDI extraction (requires prior stem separation)
 - `/generate/mashup` — mashup of two audio files
 - `/generate/add-instrumental` — add instrumental to an uploaded file

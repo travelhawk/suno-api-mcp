@@ -123,6 +123,20 @@ src/
 build.mjs            # esbuild bundle script
 ```
 
+## AI agent configuration
+
+The repo ships configuration files for AI coding assistants:
+
+| File | Agent | Purpose |
+|---|---|---|
+| `CLAUDE.md` | [Claude Code](https://claude.ai/claude-code) | Project layout, hard rules, dev commands |
+| `AGENTS.md` | [OpenAI Codex CLI](https://github.com/openai/codex) | Full layout, stdout/stderr rule, Zod-first pattern, async polling requirement, add-tool steps |
+
+Both files encode the same three invariants every agent must respect:
+1. **Never write to stdout** — the STDIO transport owns it for JSON-RPC
+2. **Schema before handler** — define the Zod schema in `src/types/inputs.ts` first
+3. **Always poll** — generation endpoints return a `taskId`; call `pollUntilDone()` before returning
+
 ## License
 
 [MIT](LICENSE)

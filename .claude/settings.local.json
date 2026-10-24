@@ -5,7 +5,12 @@
       "Bash(Select-Object FullName)",
       "Bash(Sort-Object FullName)",
       "Bash(ls -la \"D:/DevProjects/private/\" | head -20)",
-      "Bash(find \"D:/DevProjects\" -name \"*suno*\" -type d 2>/dev/null)"
+      "Bash(find \"D:/DevProjects\" -name \"*suno*\" -type d 2>/dev/null)",
+      "WebFetch(domain:docs.sunoapi.org)",
+      "mcp__sunoapi__write_lyrics",
+      "mcp__sunoapi__compose_song",
+      "mcp__sunoapi__check_credits",
+      "Bash(npm run *)"
     ]
   }
 }
